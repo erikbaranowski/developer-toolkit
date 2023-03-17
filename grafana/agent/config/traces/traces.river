@@ -1,0 +1,34 @@
+/********************************************
+ * ARGUMENTS
+ ********************************************/
+
+/********************************************
+ * EXPORTS
+ ********************************************/
+export "otelcolprocessorbatch" {
+	value = otelcol.processor.batch.default.input
+}
+
+/********************************************
+ * TRACE EXPORTERS
+ ********************************************/
+otelcol.auth.basic "tempo" {
+  username = env("TEMPO_USERNAME")
+  password = env("TEMPO_PASSWORD")
+}
+
+otelcol.exporter.otlp "tempo" {
+	client {
+		endpoint = env("TEMPO_URL")
+    	auth = otelcol.auth.basic.tempo.handler
+	}
+}
+
+/********************************************
+ * OTLP PROCESSORS
+ ********************************************/
+otelcol.processor.batch "default" {
+  output {
+	  traces  = [otelcol.exporter.otlp.tempo.input]
+  }
+}

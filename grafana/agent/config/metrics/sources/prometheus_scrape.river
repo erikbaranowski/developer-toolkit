@@ -1,0 +1,18 @@
+/********************************************
+ * ARGUMENTS
+ ********************************************/
+argument "prometheus_receiver" { }
+
+/********************************************
+ * EXPORTS
+ ********************************************/
+
+/********************************************
+ * SOURCE
+ ********************************************/
+prometheus.scrape "default" {
+	targets         = [{"__address__" = env("PROMETHEUS_SCRAPE_URL")}]
+	forward_to      = [argument.prometheus_receiver.value]
+	scrape_interval = "10s"
+	job_name        = env("PROMETHEUS_SCRAPE_JOB_NAME")
+}

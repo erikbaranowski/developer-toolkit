@@ -11,8 +11,8 @@ argument "loki_receiver" { }
  * SOURCE
  ********************************************/
 loki.source.file "default" {
-  targets    = [
-    {__path__ = env("LOG_FILE_PATH")},
-  ]
-  forward_to = [argument.loki_receiver.value]
+	targets = [
+		{__path__ = env("LOG_FILE_PATH")},
+	]
+	forward_to = [argument.loki_receiver.value]
 }

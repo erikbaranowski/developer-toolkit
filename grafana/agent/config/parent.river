@@ -1,16 +1,15 @@
-
 /********************************************
  * METRICS
  ********************************************/
 local.file "metrics" {
-  filename  = env("AGENT_CONFIG_FOLDER")+"/metrics/metrics.river"
+	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/metrics.river"
 }
 
 module.string "metrics" {
-  content = local.file.metrics.content
-  arguments = {
-    prometheus_exporter_unix_targets = prometheus.exporter.unix.targets,
-  }
+	content   = local.file.metrics.content
+	arguments = {
+		prometheus_exporter_unix_targets = prometheus.exporter.unix.targets,
+	}
 }
 
 // This is a singleton which is not allowed inside a module so it must be
@@ -21,16 +20,16 @@ prometheus.exporter.unix { }
  * AGENT LOGGING
  ********************************************/
 logging {
-    level = env("AGENT_LOG_LEVEL")
-    format = "logfmt"
+	level  = env("AGENT_LOG_LEVEL")
+	format = "logfmt"
 }
 
 local.file "logs" {
-  filename  = env("AGENT_CONFIG_FOLDER")+"/logs/logs.river"
+	filename = env("AGENT_CONFIG_FOLDER") + "/logs/logs.river"
 }
 
 module.string "logs" {
-  content = local.file.logs.content
+	content = local.file.logs.content
 }
 
 /********************************************
@@ -38,13 +37,13 @@ module.string "logs" {
  ********************************************/
 tracing {
 	sampling_fraction = 1
-    write_to = [module.string.traces.exports.otelcolprocessorbatch]
+	write_to          = [module.string.traces.exports.otelcolprocessorbatch]
 }
 
 local.file "traces" {
-  filename  = env("AGENT_CONFIG_FOLDER")+"/traces/traces.river"
+	filename = env("AGENT_CONFIG_FOLDER") + "/traces/traces.river"
 }
 
 module.string "traces" {
-  content = local.file.traces.content
+	content = local.file.traces.content
 }

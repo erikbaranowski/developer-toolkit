@@ -12,27 +12,27 @@ argument "prometheus_exporter_unix_targets" { }
  ********************************************/
 // Prometheus unix node_exporter integration
 local.file "prometheus_exporter_unix" {
-  filename  = env("AGENT_CONFIG_FOLDER")+"/metrics/sources/prometheus_exporter_unix.river"
+	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/sources/prometheus_exporter_unix.river"
 }
 
 module.string "prometheus_exporter_unix" {
-  content = local.file.prometheus_exporter_unix.content
-  arguments = {
-	prometheus_receiver = prometheus.remote_write.default.receiver,
-    prometheus_exporter_unix_targets = argument.prometheus_exporter_unix_targets.value,
-  }
+	content   = local.file.prometheus_exporter_unix.content
+	arguments = {
+		prometheus_receiver              = prometheus.remote_write.default.receiver,
+		prometheus_exporter_unix_targets = argument.prometheus_exporter_unix_targets.value,
+	}
 }
 
 // Scrape a /metrics endpoint
 local.file "prometheus_scrape" {
-  filename  = env("AGENT_CONFIG_FOLDER")+"/metrics/sources/prometheus_scrape.river"
+	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/sources/prometheus_scrape.river"
 }
 
 module.string "prometheus_scrape" {
-  content = local.file.prometheus_scrape.content
-  arguments = {
-	prometheus_receiver = prometheus.remote_write.default.receiver,
-  }
+	content   = local.file.prometheus_scrape.content
+	arguments = {
+		prometheus_receiver = prometheus.remote_write.default.receiver,
+	}
 }
 
 /********************************************
@@ -41,6 +41,7 @@ module.string "prometheus_scrape" {
 prometheus.remote_write "default" {
 	endpoint {
 		url = env("PROMETHEUS_TARGET")
+
 		basic_auth {
 			username = env("PROMETHEUS_USERNAME")
 			password = env("PROMETHEUS_PASSWORD")

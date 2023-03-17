@@ -11,21 +11,21 @@
  ********************************************/
 // Scrape a local file for logs
 local.file "loki_source_file" {
-  filename  = env("AGENT_CONFIG_FOLDER")+"/logs/sources/loki_source_file.river"
+	filename = env("AGENT_CONFIG_FOLDER") + "/logs/sources/loki_source_file.river"
 }
 
 module.string "loki_source_file" {
-  content = local.file.loki_source_file.content
-  arguments = {
-	loki_receiver = loki.write.default.receiver,
-  }
+	content   = local.file.loki_source_file.content
+	arguments = {
+		loki_receiver = loki.write.default.receiver,
+	}
 }
 
 /********************************************
  * LOG EXPORTER
  ********************************************/
 loki.write "default" {
-    endpoint {
-        url = env("LOKI_URL")
-    }
+	endpoint {
+		url = env("LOKI_URL")
+	}
 }

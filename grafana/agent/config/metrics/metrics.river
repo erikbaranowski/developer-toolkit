@@ -11,12 +11,8 @@ argument "prometheus_exporter_unix_targets" { }
  * SOURCES
  ********************************************/
 // Prometheus unix node_exporter integration
-local.file "prometheus_exporter_unix" {
-	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/sources/prometheus_exporter_unix.river"
-}
-
-module.string "prometheus_exporter_unix" {
-	content   = local.file.prometheus_exporter_unix.content
+module.file "prometheus_exporter_unix" {
+	filename  = env("AGENT_CONFIG_FOLDER") + "/metrics/sources/prometheus_exporter_unix.river"
 	arguments = {
 		prometheus_receiver              = prometheus.remote_write.default.receiver,
 		prometheus_exporter_unix_targets = argument.prometheus_exporter_unix_targets.value,
@@ -24,12 +20,8 @@ module.string "prometheus_exporter_unix" {
 }
 
 // Scrape a /metrics endpoint
-local.file "prometheus_scrape" {
-	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/sources/prometheus_scrape.river"
-}
-
-module.string "prometheus_scrape" {
-	content   = local.file.prometheus_scrape.content
+module.file "prometheus_scrape" {
+	filename  = env("AGENT_CONFIG_FOLDER") + "/metrics/sources/prometheus_scrape.river"
 	arguments = {
 		prometheus_receiver = prometheus.remote_write.default.receiver,
 	}

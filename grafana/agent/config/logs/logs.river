@@ -10,12 +10,8 @@
  * SOURCES
  ********************************************/
 // Scrape a local file for logs
-local.file "loki_source_file" {
-	filename = env("AGENT_CONFIG_FOLDER") + "/logs/sources/loki_source_file.river"
-}
-
-module.string "loki_source_file" {
-	content   = local.file.loki_source_file.content
+module.file "loki_source_file" {
+	filename  = env("AGENT_CONFIG_FOLDER") + "/logs/sources/loki_source_file.river"
 	arguments = {
 		loki_receiver = loki.write.default.receiver,
 	}

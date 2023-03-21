@@ -36,5 +36,5 @@ go run ./cmd/grafana-agent run ${AGENT_CONFIG_FOLDER}/parent.river 2>${LOG_FILE_
 or if running an installed agent, something like this should work
 
 ```bash
-agent run ${AGENT_CONFIG_FOLDER}/parent.river
+grafana-agent run ${AGENT_CONFIG_FOLDER}/parent.river
 ```

@@ -3,8 +3,8 @@
  ********************************************/
 module.file "metrics" {
 	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/metrics.river"
-	arguments = {
-		prometheus_exporter_unix_targets = prometheus.exporter.unix.targets,
+	arguments {
+		prometheus_exporter_unix_targets = prometheus.exporter.unix.targets
 	}
 }
 

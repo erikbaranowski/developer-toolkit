@@ -1,4 +1,16 @@
 /********************************************
+ * ARGUMENTS
+ ********************************************/
+argument "prometheus_exporter_unix_targets" { }
+
+/********************************************
+ * EXPORTS
+ ********************************************/
+export "otelcolprocessorbatch" {
+	value = otelcol.processor.batch.default.input
+}
+
+/********************************************
  * METRICS
  ********************************************/
 // METRICS EXPORTER
@@ -13,11 +25,8 @@ prometheus.remote_write "default" {
 	}
 }
 
-// Prometheus unix node_exporter integration
-prometheus.exporter.unix { }
-
 prometheus.scrape "prometheus_exporter_unix" {
-	targets         = prometheus.exporter.unix.targets
+	targets         = argument.prometheus_exporter_unix_targets.value
 	forward_to      = [prometheus.remote_write.default.receiver]
 	scrape_interval = "10s"
 }
@@ -33,11 +42,6 @@ prometheus.scrape "default" {
 /********************************************
  * AGENT LOGGING
  ********************************************/
-logging {
-	level  = env("AGENT_LOG_LEVEL")
-	format = "logfmt"
-}
-
 // LOG EXPORTER
 loki.write "default" {
 	endpoint {
@@ -56,12 +60,6 @@ loki.source.file "default" {
 /********************************************
  * AGENT TRACING
  ********************************************/
-//Trac
-tracing {
-	sampling_fraction = 1
-	write_to          = [otelcol.processor.batch.default.input]
-}
-
 // TRACE EXPORTERS
 otelcol.auth.basic "tempo" {
 	username = env("TEMPO_USERNAME")

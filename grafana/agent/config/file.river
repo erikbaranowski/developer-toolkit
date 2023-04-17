@@ -1,5 +1,5 @@
 /********************************************
- * METRICS
+ * AGENT METRICS
  ********************************************/
 module.file "prometheus_receiver" {
 	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/prometheus_receiver/module.river"
@@ -17,10 +17,6 @@ module.file "agent_metrics" {
 		receiver = module.file.prometheus_receiver.exports.receiver
 	}
 }
-
-// This is a singleton which is not allowed inside a module so it must be
-// passed in as an argument to module.file.metrics above.
-// prometheus.exporter.unix { }
 
 /********************************************
  * AGENT LOGGING

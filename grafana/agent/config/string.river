@@ -1,5 +1,5 @@
 /********************************************
- * METRICS
+ * AGENT METRICS
  ********************************************/
 local.file "prometheus_receiver" {
 	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/prometheus_receiver/module.river"

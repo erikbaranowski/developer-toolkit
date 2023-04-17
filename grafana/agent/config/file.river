@@ -1,0 +1,56 @@
+/********************************************
+ * METRICS
+ ********************************************/
+module.file "prometheus_receiver" {
+	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/prometheus_receiver/module.river"
+	arguments {
+		username = env("METRICS_USERNAME")
+		password = env("METRICS_PASSWORD")
+		url      = env("METRICS_URL")
+	}
+}
+
+module.file "agent_metrics" {
+	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/prometheus_scrape/module.river"
+	arguments {
+		address  = "http://0.0.0.0:12345/metrics"
+		receiver = module.file.prometheus_receiver.exports.receiver
+	}
+}
+
+// This is a singleton which is not allowed inside a module so it must be
+// passed in as an argument to module.file.metrics above.
+// prometheus.exporter.unix { }
+
+/********************************************
+ * AGENT LOGGING
+ ********************************************/
+logging {
+	level  = env("AGENT_LOG_LEVEL")
+	format = "logfmt"
+}
+
+module.file "forward_loki_logs" {
+	filename = env("AGENT_CONFIG_FOLDER") + "/logs/forward_loki_logs/module.river"
+	arguments {
+		filepath = env("LOG_FILEPATH")
+		url      = env("LOG_URL")
+	}
+}
+
+/********************************************
+ * AGENT TRACING
+ ********************************************/
+tracing {
+	sampling_fraction = 1
+	write_to          = [module.file.otel_input.exports.input]
+}
+
+module.file "otel_input" {
+	filename = env("AGENT_CONFIG_FOLDER") + "/traces/otel_input/module.river"
+	arguments {
+		username = env("TRACE_USERNAME")
+		password = env("TRACE_PASSWORD")
+		url      = env("TRACE_URL")
+	}
+}

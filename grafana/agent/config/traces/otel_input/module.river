@@ -1,26 +1,37 @@
 /********************************************
  * ARGUMENTS
  ********************************************/
+argument "username" {
+	optional = false
+}
+
+argument "password" {
+	optional = false
+}
+
+argument "url" {
+	optional = false
+}
 
 /********************************************
  * EXPORTS
  ********************************************/
-export "otelcolprocessorbatch" {
+export "input" {
 	value = otelcol.processor.batch.default.input
 }
 
 /********************************************
  * TRACE EXPORTERS
  ********************************************/
-otelcol.auth.basic "tempo" {
-	username = env("TEMPO_USERNAME")
-	password = env("TEMPO_PASSWORD")
+otelcol.auth.basic "default" {
+	username = argument.username.value
+	password = argument.password.value
 }
 
-otelcol.exporter.otlp "tempo" {
+otelcol.exporter.otlp "default" {
 	client {
-		endpoint = env("TEMPO_URL")
-		auth     = otelcol.auth.basic.tempo.handler
+		endpoint = argument.url.value
+		auth     = otelcol.auth.basic.default.handler
 	}
 }
 
@@ -29,6 +40,6 @@ otelcol.exporter.otlp "tempo" {
  ********************************************/
 otelcol.processor.batch "default" {
 	output {
-		traces = [otelcol.exporter.otlp.tempo.input]
+		traces = [otelcol.exporter.otlp.default.input]
 	}
 }

@@ -1,20 +1,27 @@
 /********************************************
  * ARGUMENTS
  ********************************************/
+argument "filepath" {
+	optional = false
+}
+
+argument "url" {
+	optional = false
+}
 
 /********************************************
  * EXPORTS
  ********************************************/
 
+
 /********************************************
  * SOURCES
  ********************************************/
-// Scrape a local file for logs
-module.file "loki_source_file" {
-	filename  = env("AGENT_CONFIG_FOLDER") + "/logs/sources/loki_source_file.river"
-	arguments {
-		loki_receiver = loki.write.default.receiver
-	}
+loki.source.file "default" {
+	targets = [
+		{__path__ = argument.filepath.value},
+	]
+	forward_to = [loki.write.default.receiver]
 }
 
 /********************************************
@@ -22,6 +29,6 @@ module.file "loki_source_file" {
  ********************************************/
 loki.write "default" {
 	endpoint {
-		url = env("LOKI_URL")
+		url = argument.url.value
 	}
 }

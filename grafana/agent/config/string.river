@@ -18,6 +18,7 @@ local.file "metrics_prometheus_scrape_agent" {
 
 module.string "metrics_prometheus_scrape_agent" {
 	content = local.file.metrics_prometheus_scrape_agent.content
+
 	arguments {
 		address  = "0.0.0.0:12345"
 		receiver = prometheus.remote_write.default.receiver
@@ -38,6 +39,7 @@ local.file "logs_forward_to_loki" {
 
 module.string "logs_forward_to_loki" {
 	content = local.file.logs_forward_to_loki.content
+
 	arguments {
 		filepath = env("LOG_FILEPATH")
 		url      = env("LOG_URL")
@@ -58,6 +60,7 @@ local.file "traces_otel_input" {
 
 module.string "traces_otel_input" {
 	content = local.file.traces_otel_input.content
+
 	arguments {
 		username = env("TRACE_USERNAME")
 		password = env("TRACE_PASSWORD")

@@ -2,16 +2,16 @@
  * ARGUMENTS
  ********************************************/
 argument "address" {
-    optional = false
+	optional = false
 }
 
 argument "receiver" {
-    optional = false
+	optional = false
 }
 
 argument "scrape_interval" {
-    optional = true
-    default  = "10s"
+	optional = true
+	default  = "10s"
 }
 
 /********************************************

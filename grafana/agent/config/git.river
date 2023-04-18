@@ -14,8 +14,9 @@ prometheus.remote_write "default" {
 
 module.git "metrics_prometheus_scrape_agent" {
 	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
-    revision   = "main"
-    path       = "grafana/agent/config/metrics/prometheus_scrape/module.river"
+	revision   = "main"
+	path       = "grafana/agent/config/metrics/prometheus_scrape/module.river"
+
 	arguments {
 		address  = "0.0.0.0:12345"
 		receiver = prometheus.remote_write.default.receiver
@@ -32,8 +33,9 @@ logging {
 
 module.git "logs_forward_to_loki" {
 	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
-    revision   = "main"
-    path       = "grafana/agent/config/logs/forward_to_loki/module.river"
+	revision   = "main"
+	path       = "grafana/agent/config/logs/forward_to_loki/module.river"
+
 	arguments {
 		filepath = env("LOG_FILEPATH")
 		url      = env("LOG_URL")
@@ -50,8 +52,9 @@ tracing {
 
 module.git "traces_otel_input" {
 	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
-    revision   = "main"
-    path       = "grafana/agent/config/traces/otel_input/module.river"
+	revision   = "main"
+	path       = "grafana/agent/config/traces/otel_input/module.river"
+
 	arguments {
 		username = env("TRACE_USERNAME")
 		password = env("TRACE_PASSWORD")

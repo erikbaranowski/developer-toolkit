@@ -3,19 +3,19 @@
  ********************************************/
 prometheus.remote_write "default" {
 	endpoint {
-		url = env("METRICS_URL")
+		url = env("METRIC_URL")
 
 		basic_auth {
-			username = env("METRICS_USERNAME")
-			password = env("METRICS_PASSWORD")
+			username = env("METRIC_USERNAME")
+			password = env("METRIC_PASSWORD")
 		}
 	}
 }
 
-module.file "agent_metrics" {
+module.file "metrics_prometheus_scrape_agent" {
 	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/prometheus_scrape/module.river"
 	arguments {
-		address  = "http://0.0.0.0:12345/metrics"
+		address  = "0.0.0.0:12345"
 		receiver = prometheus.remote_write.default.receiver
 	}
 }
@@ -28,8 +28,8 @@ logging {
 	format = "logfmt"
 }
 
-module.file "forward_loki_logs" {
-	filename = env("AGENT_CONFIG_FOLDER") + "/logs/forward_loki_logs/module.river"
+module.file "logs_forward_to_loki" {
+	filename = env("AGENT_CONFIG_FOLDER") + "/logs/forward_to_loki/module.river"
 	arguments {
 		filepath = env("LOG_FILEPATH")
 		url      = env("LOG_URL")
@@ -41,10 +41,10 @@ module.file "forward_loki_logs" {
  ********************************************/
 tracing {
 	sampling_fraction = 1
-	write_to          = [module.file.otel_input.exports.input]
+	write_to          = [module.file.traces_otel_input.exports.input]
 }
 
-module.file "otel_input" {
+module.file "traces_otel_input" {
 	filename = env("AGENT_CONFIG_FOLDER") + "/traces/otel_input/module.river"
 	arguments {
 		username = env("TRACE_USERNAME")

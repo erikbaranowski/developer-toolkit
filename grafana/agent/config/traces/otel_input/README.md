@@ -1,4 +1,4 @@
-# traces/otelexporter
+# traces/otel_input
 
 The `traces/otel_input` module is an example module which exports an otel trace
 input. That input will run the traces through the default
@@ -8,7 +8,7 @@ target url.
 ## Usage
 
 ```river
-module.git "otel_input" {
+module.git "traces_otel_input" {
   repository = "https://github.com/erikbaranowski/developer-toolkit.git"
   revision   = "main"
   path       = "grafana/agent/config/traces/otel_input/module.river"
@@ -38,7 +38,7 @@ The following fields are exported by the module:
 
 | Name | Type | Description
 | ---- | ---- | -----------
-| `input` | `otelcol.Consumer` | A value that other components can use to sendtelemetry data to.
+| `input` | `otelcol.Consumer` | A value that other components can use to send telemetry data to.
 
 ## Example
 
@@ -48,11 +48,11 @@ Agent to a trace endpoint.
 ```river
 tracing {
 	sampling_fraction = 1
-	write_to          = [module.file.otel_input.exports.input]
+	write_to          = [module.file.traces_otel_input.exports.input]
 }
 
-module.git "otel_input" {
-	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
+module.git "traces_otel_input" {
+  repository = "https://github.com/erikbaranowski/developer-toolkit.git"
   revision   = "main"
   path       = "grafana/agent/config/traces/otel_input/module.river"
 

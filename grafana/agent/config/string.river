@@ -1,28 +1,26 @@
 /********************************************
  * AGENT METRICS
  ********************************************/
-local.file "prometheus_receiver" {
-	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/prometheus_receiver/module.river"
-}
+prometheus.remote_write "default" {
+	endpoint {
+		url = env("METRIC_URL")
 
-module.string "prometheus_receiver" {
-	content = local.file.prometheus_receiver.content
-	arguments {
-		username = env("METRICS_USERNAME")
-		password = env("METRICS_PASSWORD")
-		url      = env("METRICS_URL")
+		basic_auth {
+			username = env("METRIC_USERNAME")
+			password = env("METRIC_PASSWORD")
+		}
 	}
 }
 
-local.file "agent_metrics" {
-	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/prometheus_receiver/module.river"
+local.file "metrics_prometheus_scrape_agent" {
+	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/prometheus_scrape/module.river"
 }
 
-module.string "agent_metrics" {
-	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/prometheus_scrape/module.river"
+module.string "metrics_prometheus_scrape_agent" {
+	content = local.file.metrics_prometheus_scrape_agent.content
 	arguments {
-		address  = "http://0.0.0.0:12345/metrics"
-		receiver = module.string.prometheus_receiver.exports.receiver
+		address  = "0.0.0.0:12345"
+		receiver = prometheus.remote_write.default.receiver
 	}
 }
 
@@ -34,8 +32,12 @@ logging {
 	format = "logfmt"
 }
 
-module.file "forward_loki_logs" {
-	filename = env("AGENT_CONFIG_FOLDER") + "/logs/forward_loki_logs/module.river"
+local.file "logs_forward_to_loki" {
+	filename = env("AGENT_CONFIG_FOLDER") + "/logs/forward_to_loki/module.river"
+}
+
+module.string "logs_forward_to_loki" {
+	content = local.file.logs_forward_to_loki.content
 	arguments {
 		filepath = env("LOG_FILEPATH")
 		url      = env("LOG_URL")
@@ -47,11 +49,15 @@ module.file "forward_loki_logs" {
  ********************************************/
 tracing {
 	sampling_fraction = 1
-	write_to          = [module.file.otel_input.exports.input]
+	write_to          = [module.string.traces_otel_input.exports.input]
 }
 
-module.file "otel_input" {
+local.file "traces_otel_input" {
 	filename = env("AGENT_CONFIG_FOLDER") + "/traces/otel_input/module.river"
+}
+
+module.string "traces_otel_input" {
+	content = local.file.traces_otel_input.content
 	arguments {
 		username = env("TRACE_USERNAME")
 		password = env("TRACE_PASSWORD")

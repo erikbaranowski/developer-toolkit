@@ -1,15 +1,15 @@
-# logs/forward_loki_logs
+# logs/forward_to_loki
 
-The `logs/forward_loki_logs` module is an example module which exports logs
+The `logs/forward_to_loki` module is an example module which exports logs
 from a log file to a loki endpoint.
 
 ## Usage
 
 ```river
-module.git "forward_loki_logs" {
+module.git "forward_to_loki" {
   repository = "https://github.com/erikbaranowski/developer-toolkit.git"
   revision   = "main"
-  path       = "grafana/agent/config/logs/forward_loki_logs/module.river"
+  path       = "grafana/agent/config/logs/forward_to_loki/module.river"
 
   arguments {
     filepath = FILEPATH
@@ -40,10 +40,10 @@ Agent to a loki endpoint.
 *Grafana Agent logs must be forwarded to the file at LOG_FILEPATH*
 
 ```river
-module.git "forward_loki_logs" {
+module.git "logs_forward_to_loki" {
   repository = "https://github.com/erikbaranowski/developer-toolkit.git"
   revision   = "main"
-  path       = "grafana/agent/config/logs/forward_loki_logs/module.river"
+  path       = "grafana/agent/config/logs/forward_to_loki/module.river"
 
   arguments {
     filepath = env("LOG_FILEPATH")

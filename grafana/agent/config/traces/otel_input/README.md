@@ -9,16 +9,17 @@ target url.
 
 ```river
 module.git "traces_otel_input" {
-  repository = "https://github.com/erikbaranowski/developer-toolkit.git"
-  revision   = "main"
-  path       = "grafana/agent/config/traces/otel_input/module.river"
+	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
+	revision   = "main"
+	path       = "grafana/agent/config/traces/otel_input/module.river"
 
-  arguments {
-    username = USERNAME
-    password = PASSWORD
-    url      = URL
-  }
+	arguments {
+		username = USERNAME
+		password = PASSWORD
+		url      = URL
+	}
 }
+
 ```
 
 ## Module arguments
@@ -52,9 +53,9 @@ tracing {
 }
 
 module.git "traces_otel_input" {
-  repository = "https://github.com/erikbaranowski/developer-toolkit.git"
-  revision   = "main"
-  path       = "grafana/agent/config/traces/otel_input/module.river"
+	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
+	revision   = "main"
+	path       = "grafana/agent/config/traces/otel_input/module.river"
 
 	arguments {
 		username = env("TRACE_USERNAME")

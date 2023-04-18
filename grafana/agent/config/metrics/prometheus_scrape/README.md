@@ -7,15 +7,16 @@ metrics from a promtheus compatible endpoint and forwards them to a receiver.
 
 ```river
 module.git "traces_otel_input" {
-  repository = "https://github.com/erikbaranowski/developer-toolkit.git"
-  revision   = "main"
-  path       = "grafana/agent/config/traces/otel_input/module.river"
+	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
+	revision   = "main"
+	path       = "grafana/agent/config/traces/otel_input/module.river"
 
-  arguments {
-    address  = ADDRESS
-    receiver = RECEIVER
-  }
+	arguments {
+		address  = ADDRESS
+		receiver = RECEIVER
+	}
 }
+
 ```
 
 ## Module arguments
@@ -51,12 +52,14 @@ prometheus.remote_write "default" {
 }
 
 module.git "metrics_prometheus_scrape_agent" {
-    repository = "https://github.com/erikbaranowski/developer-toolkit.git"
-    revision   = "main"
-    path       = "grafana/agent/config/metrics/prometheus_scrape/module.river"
+	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
+	revision   = "main"
+	path       = "grafana/agent/config/metrics/prometheus_scrape/module.river"
+
 	arguments {
 		address  = "0.0.0.0:12345"
 		receiver = prometheus.remote_write.default.receiver
 	}
 }
+
 ```

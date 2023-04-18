@@ -7,15 +7,16 @@ from a log file to a loki endpoint.
 
 ```river
 module.git "forward_to_loki" {
-  repository = "https://github.com/erikbaranowski/developer-toolkit.git"
-  revision   = "main"
-  path       = "grafana/agent/config/logs/forward_to_loki/module.river"
+	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
+	revision   = "main"
+	path       = "grafana/agent/config/logs/forward_to_loki/module.river"
 
-  arguments {
-    filepath = FILEPATH
-    url      = URL
-  }
+	arguments {
+		filepath = FILEPATH
+		url      = URL
+	}
 }
+
 ```
 
 ## Module arguments
@@ -41,14 +42,14 @@ Agent to a loki endpoint.
 
 ```river
 module.git "logs_forward_to_loki" {
-  repository = "https://github.com/erikbaranowski/developer-toolkit.git"
-  revision   = "main"
-  path       = "grafana/agent/config/logs/forward_to_loki/module.river"
+	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
+	revision   = "main"
+	path       = "grafana/agent/config/logs/forward_to_loki/module.river"
 
-  arguments {
-    filepath = env("LOG_FILEPATH")
-    url      = env("URL")
-  }
+	arguments {
+		filepath = env("LOG_FILEPATH")
+		url      = env("URL")
+	}
 }
 
 ```

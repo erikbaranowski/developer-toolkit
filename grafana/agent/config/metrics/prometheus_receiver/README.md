@@ -7,16 +7,17 @@ prometheus receiver for use by other components.
 
 ```river
 module.git "metrics_prometheus_receiver" {
-  repository = "https://github.com/erikbaranowski/developer-toolkit.git"
-  revision   = "main"
-  path       = "grafana/agent/config/metrics/prometheus_receiver/module.river"
+	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
+	revision   = "main"
+	path       = "grafana/agent/config/metrics/prometheus_receiver/module.river"
 
-  arguments {
-    username = USERNAME
-    password = PASSWORD
-    url      = URL
-  }
+	arguments {
+		username = USERNAME
+		password = PASSWORD
+		url      = URL
+	}
 }
+
 ```
 
 ## Module arguments
@@ -45,9 +46,9 @@ Agent to prometheus.
 
 ```river
 module.git "metrics_prometheus_receiver" {
-  repository = "https://github.com/erikbaranowski/developer-toolkit.git"
-  revision   = "main"
-  path       = "grafana/agent/config/metrics/prometheus_receiver/module.river"
+	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
+	revision   = "main"
+	path       = "grafana/agent/config/metrics/prometheus_receiver/module.river"
 
 	arguments {
 		username = env("TRACE_USERNAME")
@@ -57,8 +58,8 @@ module.git "metrics_prometheus_receiver" {
 }
 
 prometheus.scrape "metrics_agent" {
-	targets         = [{"__address__" = "0.0.0.0:12345"}]
-	forward_to      = [module.git.metrics_prometheus_receiver.exports.receiver]
+	targets    = [{"__address__" = "0.0.0.0:12345"}]
+	forward_to = [module.git.metrics_prometheus_receiver.exports.receiver]
 }
 
 ```

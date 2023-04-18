@@ -1,0 +1,60 @@
+/********************************************
+ * AGENT METRICS
+ ********************************************/
+prometheus.remote_write "default" {
+	endpoint {
+		url = env("METRIC_URL")
+
+		basic_auth {
+			username = env("METRIC_USERNAME")
+			password = env("METRIC_PASSWORD")
+		}
+	}
+}
+
+module.git "metrics_prometheus_scrape_agent" {
+	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
+    revision   = "main"
+    path       = "grafana/agent/config/metrics/prometheus_scrape/module.river"
+	arguments {
+		address  = "0.0.0.0:12345"
+		receiver = prometheus.remote_write.default.receiver
+	}
+}
+
+/********************************************
+ * AGENT LOGGING
+ ********************************************/
+logging {
+	level  = env("AGENT_LOG_LEVEL")
+	format = "logfmt"
+}
+
+module.git "logs_forward_to_loki" {
+	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
+    revision   = "main"
+    path       = "grafana/agent/config/logs/forward_to_loki/module.river"
+	arguments {
+		filepath = env("LOG_FILEPATH")
+		url      = env("LOG_URL")
+	}
+}
+
+/********************************************
+ * AGENT TRACING
+ ********************************************/
+tracing {
+	sampling_fraction = 1
+	write_to          = [module.git.traces_otel_input.exports.input]
+}
+
+module.git "traces_otel_input" {
+	repository = "https://github.com/erikbaranowski/developer-toolkit.git"
+    revision   = "main"
+    path       = "grafana/agent/config/traces/otel_input/module.river"
+	arguments {
+		username = env("TRACE_USERNAME")
+		password = env("TRACE_PASSWORD")
+		url      = env("TRACE_URL")
+	}
+}

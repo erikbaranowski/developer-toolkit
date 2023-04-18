@@ -1,12 +1,14 @@
 /********************************************
  * AGENT METRICS
  ********************************************/
-module.file "prometheus_receiver" {
-	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/prometheus_receiver/module.river"
-	arguments {
-		username = env("METRICS_USERNAME")
-		password = env("METRICS_PASSWORD")
-		url      = env("METRICS_URL")
+prometheus.remote_write "default" {
+	endpoint {
+		url = env("METRICS_URL")
+
+		basic_auth {
+			username = env("METRICS_USERNAME")
+			password = env("METRICS_PASSWORD")
+		}
 	}
 }
 
@@ -14,7 +16,7 @@ module.file "agent_metrics" {
 	filename = env("AGENT_CONFIG_FOLDER") + "/metrics/prometheus_scrape/module.river"
 	arguments {
 		address  = "http://0.0.0.0:12345/metrics"
-		receiver = module.file.prometheus_receiver.exports.receiver
+		receiver = prometheus.remote_write.default.receiver
 	}
 }
 

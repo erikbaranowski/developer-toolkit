@@ -86,3 +86,22 @@ or if running an installed agent, something like this should work:
 ```bash
 grafana-agent run ${AGENT_CONFIG_FOLDER}/git.river
 ```
+
+## Without Module Entrypoint
+
+`single.river` is an entrypoint parent config that does not make use of modules.
+This is useful for testing and visual comparison with modules.
+
+Clone this repo and set the AGENT_CONFIG_FOLDER environment variable to the path to this folder.
+
+The command to run the agent from the root of the agent project looks like this:
+
+```bash
+go run ./cmd/grafana-agent run ${AGENT_CONFIG_FOLDER}/single.river 2>${LOG_FILEPATH}
+```
+
+or if running an installed agent, something like this should work:
+
+```bash
+grafana-agent run ${AGENT_CONFIG_FOLDER}/single.river
+```
